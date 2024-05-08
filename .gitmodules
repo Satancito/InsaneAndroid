@@ -1,0 +1,20 @@
+[submodule "InsaneCpp"]
+	path = submodules/InsaneCpp
+	url = https://github.com/Satancito/InsaneCpp
+	branch = main
+[submodule "PsCoreFxs"]
+	path = submodules/PsCoreFxs
+	url = https://github.com/Satancito/PsCoreFxs
+	branch = main
+[submodule "PsBotan"]
+	path = submodules/PsBotan
+	url = https://github.com/Satancito/PsBotan
+	branch = main
+[submodule "PsICU"]
+	path = submodules/PsICU
+	url = https://github.com/Satancito/PsICU
+	branch = main
+[submodule "CommonCppIncludes"]
+	path = submodules/CommonCppIncludes
+	url = https://github.com/Satancito/CommonCppIncludes
+	branch = main
