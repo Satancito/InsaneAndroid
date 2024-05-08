@@ -129,24 +129,6 @@ function Build-IcuLibraryForInsane {
     & "$PSScriptRoot/submodules/PsICU/X-PsIcu-Android.ps1" -DistDirSuffix "Insane" -AndroidAPI $AndroidAPI
 }
 
-function New-JniLibsDirs {
-    New-Item -Path "$__INSANEANDROID_JNILIBS_DIST_DIR_NAME_FORMAT" -ItemType Directory -Force
-    $__INSANEANDROID_INSANE_BUILD_CONFIGURATIONS.Keys | ForEach-Object {
-        $configuration = $__INSANEANDROID_INSANE_BUILD_CONFIGURATIONS[$_]
-        $botanConfiguration = $__PSBOTAN_ANDROID_BUILD_CONFIGURATIONS[$_]
-
-        $botanConfiguration.DistDirName = "$($botanConfiguration.DistDirName -f $AndroidAPI)-Insane"
-        $botanConfiguration.DistDir = "$LibsDir/$($botanConfiguration.DistDirName)"
-
-        
-        if (!(Test-Path "$($botanConfiguration.DistDir)" -PathType Container)) {
-            throw "Botan library path not found `"$($botanConfiguration.DistDir)`"."
-        }
-
-    }
-    
-}
-
 if ($BuildBotan.IsPresent) {
     Build-BotanLibraryForInsane
     exit
