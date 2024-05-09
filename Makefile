@@ -5,12 +5,12 @@
 # SOURCES_DIR = # Parameter
 # BUILD_DIR = # Parameter
 # LIB_SUFFIX = # Parameter
-
-# BOTAN_MAJOR_VERSION = # Parameter
-# BOTAN_DIST_DIR = # Parameter
 # DIST_DIR = # Parameter
 # JNILIBS_DIR = # Parameter
 # ANDROID_ABI = # Parameter
+
+# BOTAN_MAJOR_VERSION = # Parameter
+# BOTAN_DIST_DIR = # Parameter
 BOTAN_INCLUDE_DIR = $(BOTAN_DIST_DIR)/include/botan-$(BOTAN_MAJOR_VERSION)
 BOTAN_LIB_DIR = $(BOTAN_DIST_DIR)/lib
 BOTAN_LIB_NAME = libbotan-$(BOTAN_MAJOR_VERSION)
@@ -42,13 +42,13 @@ RELEASE_STR    = Release
 COMPILATION_DB_EXT = compile_commands.json
 
 ifeq ($(CONFIGURATION), $(DEBUG_STR))
-    OPTIMIZATION = -g
+    OPTIMIZATION = -g -O0
 else
 	OPTIMIZATION = -O2
 endif
 INCLUDEFLAGS = -I$(MY_INCLUDE_DIR) -I$(BOTAN_INCLUDE_DIR) -I$(ICU_INCLUDE_DIR) -I$(COMMON_CPP_INCLUDES_DIR) -I$(INSANE_CPP_INCLUDE_DIR)
 CXXFLAGS = -std=c++20 -fPIC $(OPTIMIZATION) $(INCLUDEFLAGS) -fexceptions -Wall -Wextra -Wpedantic -Wshadow -Wstrict-aliasing -Wstrict-overflow=5 -Wcast-align -Wmissing-declarations -Wpointer-arith -Wcast-qual -Wshorten-64-to-32 -Wtautological-compare
-CPPFLAGS = -DINSANE_EXPORTS
+CPPFLAGS = -DINSANE_EXPORTS -D_REENTRANT
 LDFLAGS = 
 ARFLAGS = rcs
 
@@ -72,9 +72,12 @@ Install:
 		New-Item -Path \"$(DIST_DIR)/Include/Insane\" -ItemType Directory -Force | Out-Null; \
 		Copy-Item -Path \"$(INSANE_CPP_INCLUDE_DIR)/Insane/Insane*.h\" -Destination \"$(DIST_DIR)/Include/Insane\" -Force; \
 		Copy-Item -Path \"$(MY_INCLUDE_DIR)/Insane/*.h\" -Destination \"$(DIST_DIR)/Include/Insane\" -Force; \
+		Remove-Item -Path \"$(JNILIBS_DIR)/$(CONFIGURATION)/$(ANDROID_ABI)\" -Force -Recurse -ErrorAction Ignore; \
 		New-Item -Path \"$(JNILIBS_DIR)/$(CONFIGURATION)/$(ANDROID_ABI)\" -ItemType Directory -Force | Out-Null; \
+		New-Item -Path \"$(JNILIBS_DIR)/$(CONFIGURATION)/$(ANDROID_ABI)/Include/Insane\" -ItemType Directory -Force | Out-Null; \
 		Copy-Item -Path \"$(BUILD_DIR)/$(SHARED_LIB_NAME)\" -Destination \"$(JNILIBS_DIR)/$(CONFIGURATION)/$(ANDROID_ABI)\"; \
 		Copy-Item -Path \"$(BOTAN_SHARED_LIB)\" -Destination \"$(JNILIBS_DIR)/$(CONFIGURATION)/$(ANDROID_ABI)\"; \
+		Copy-Item -Path \"$(DIST_DIR)/Include/Insane/*.h\" -Destination \"$(JNILIBS_DIR)/$(CONFIGURATION)/$(ANDROID_ABI)/Include/Insane\" -Force; \
 	}"
 
 All: $(BUILD_DIR)/$(STATIC_LIB_NAME) $(BUILD_DIR)/$(SHARED_LIB_NAME)
