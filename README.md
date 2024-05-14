@@ -12,9 +12,7 @@ Insane native lib for Android.
 - ***DistDir, distDir, DIST_DIR*** is the dist folder of the library. Format is `a/destination/dir/Insane-<Version>-Android-Api<AndroidAPI>-<ABI>-<Configuration><DistDirSuffix>`
 Configuration values are Debug or Release. ABI values are Arm, Arm64, X86, X64. AndroidAPI is user defined. DistDirSuffix is user defined.   
 
-- ***JNI_LIBS*** is the dist folder of the library for all ABIs. Format is `a/destination/dir/Insane-<Version>-Android-Api<AndroidAPI> JniLibs`
-
-e.g. `Insane-1.0.0-Android-Api34 JniLibs`
+- ***JNI_LIBS*** is the library distribution folder for all ABIs to be used in Android native projects. Format is `a/destination/dir/Insane-<Version>-Android-Api<AndroidAPI> JniLibs`
 
 ### how to use?
 
