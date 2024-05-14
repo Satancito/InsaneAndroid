@@ -1,7 +1,7 @@
 # InsaneAndroid
 Insane native lib for Android.
 ### Prerequisites
-- [PowerShell]("https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.4")
+- [PowerShell](https://learn.microsoft.com/en-us/powershell/scripting/install/installing-powershell?view=powershell-7.4)
 - GNU Make tool.
 - Build Botan library.
 - Build ICU library.
