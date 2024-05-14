@@ -76,6 +76,7 @@ Install:
 		New-Item -Path \"$(JNILIBS_DIR)/$(CONFIGURATION)/$(ANDROID_ABI)\" -ItemType Directory -Force | Out-Null; \
 		New-Item -Path \"$(JNILIBS_DIR)/$(CONFIGURATION)/$(ANDROID_ABI)/Include/Insane\" -ItemType Directory -Force | Out-Null; \
 		Copy-Item -Path \"$(BUILD_DIR)/$(SHARED_LIB_NAME)\" -Destination \"$(JNILIBS_DIR)/$(CONFIGURATION)/$(ANDROID_ABI)\"; \
+		Copy-Item -Path \"$(BUILD_DIR)/$(STATIC_LIB_NAME)\" -Destination \"$(JNILIBS_DIR)/$(CONFIGURATION)/$(ANDROID_ABI)\"; \
 		Copy-Item -Path \"$(BOTAN_SHARED_LIB)\" -Destination \"$(JNILIBS_DIR)/$(CONFIGURATION)/$(ANDROID_ABI)\"; \
 		Copy-Item -Path \"$(DIST_DIR)/Include/Insane/*.h\" -Destination \"$(JNILIBS_DIR)/$(CONFIGURATION)/$(ANDROID_ABI)/Include/Insane\" -Force; \
 	}"
@@ -86,42 +87,44 @@ $(BUILD_DIR)/$(SHARED_LIB_NAME): $(OBJS_ALL)
 	$(CRLF)	
 	$(LD) -shared -fPIC -Wl,-soname,$(SHARED_LIB_NAME)  -o $@ $(OBJS_ALL) -L$(BOTAN_LIB_DIR) -L$(ICU_LIB_DIR) -Wl,-Bstatic $(ICU_LIBS_LD_PARAM) -Wl,-Bdynamic $(BOTAN_LIB_LD_PARAM) -ldl
 
-$(BUILD_DIR)/$(STATIC_LIB_NAME): $(OBJS_ALL)
-	$(CRLF)
-	$(AR) $(ARFLAGS) $@ $(OBJS_ALL) $(BOTAN_STATIC_LIB) $(ICU_STATIC_LIBS)
+$(BUILD_DIR)/$(STATIC_LIB_NAME): $(BUILD_DIR)/libInsane.o
+	$(AR) $(ARFLAGS) $@ $(BUILD_DIR)/libInsane.o
 
-$(BUILD_DIR)/InsaneAndroid.o: $(MY_SOURCES_DIR)/InsaneAndroid.cpp $(MY_INCLUDE_DIR)/Insane/InsaneAndroid.h $(INSANE_CPP_SOURCE_DIR)/*.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h
+$(BUILD_DIR)/libInsane.o: $(OBJS_ALL)
+	$(CXX) $(OBJS_ALL) $(BOTAN_STATIC_LIB) $(ICU_STATIC_LIBS) -o $(BUILD_DIR)/libInsane.o -r
+
+$(BUILD_DIR)/InsaneAndroid.o: $(MY_SOURCES_DIR)/InsaneAndroid.cpp $(MY_INCLUDE_DIR)/Insane/InsaneAndroid.h $(INSANE_CPP_SOURCE_DIR)/*.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h $(SOURCES_DIR)/Makefile
 	$(CRLF)
 	$(CXX) -MJ $@.$(COMPILATION_DB_EXT) $(BUILD_FLAGS) -c $(MY_SOURCES_DIR)/InsaneAndroid.cpp -o $@
 
-$(BUILD_DIR)/InsanePreprocessor.o: $(INSANE_CPP_SOURCE_DIR)/InsanePreprocessor.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h
+$(BUILD_DIR)/InsanePreprocessor.o: $(INSANE_CPP_SOURCE_DIR)/InsanePreprocessor.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h $(SOURCES_DIR)/Makefile
 	$(CRLF)
 	$(CXX) -MJ $@.$(COMPILATION_DB_EXT) $(BUILD_FLAGS) -c $(INSANE_CPP_SOURCE_DIR)/InsanePreprocessor.cpp -o $@
 
-$(BUILD_DIR)/Insane.o: $(INSANE_CPP_SOURCE_DIR)/Insane.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h
+$(BUILD_DIR)/Insane.o: $(INSANE_CPP_SOURCE_DIR)/Insane.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h $(SOURCES_DIR)/Makefile
 	$(CRLF)
 	$(CXX) -MJ $@.$(COMPILATION_DB_EXT) $(BUILD_FLAGS) -c $(INSANE_CPP_SOURCE_DIR)/Insane.cpp -o $@
 
-$(BUILD_DIR)/InsaneException.o: $(INSANE_CPP_SOURCE_DIR)/InsaneException.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h
+$(BUILD_DIR)/InsaneException.o: $(INSANE_CPP_SOURCE_DIR)/InsaneException.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h $(SOURCES_DIR)/Makefile
 	$(CRLF)
 	$(CXX) -MJ $@.$(COMPILATION_DB_EXT) $(BUILD_FLAGS) -c $(INSANE_CPP_SOURCE_DIR)/InsaneException.cpp -o $@
 
-$(BUILD_DIR)/InsaneCore.o: $(INSANE_CPP_SOURCE_DIR)/InsaneCore.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h
+$(BUILD_DIR)/InsaneCore.o: $(INSANE_CPP_SOURCE_DIR)/InsaneCore.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h $(SOURCES_DIR)/Makefile
 	$(CRLF)
 	$(CXX) -MJ $@.$(COMPILATION_DB_EXT) $(BUILD_FLAGS) -c $(INSANE_CPP_SOURCE_DIR)/InsaneCore.cpp -o $@
 
-$(BUILD_DIR)/__InsaneCore.o: $(INSANE_CPP_SOURCE_DIR)/__InsaneCore.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h
+$(BUILD_DIR)/__InsaneCore.o: $(INSANE_CPP_SOURCE_DIR)/__InsaneCore.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h $(SOURCES_DIR)/Makefile
 	$(CRLF)
 	$(CXX) -MJ $@.$(COMPILATION_DB_EXT) $(BUILD_FLAGS) -c $(INSANE_CPP_SOURCE_DIR)/__InsaneCore.cpp -o $@
 
-$(BUILD_DIR)/InsaneTest.o: $(INSANE_CPP_SOURCE_DIR)/InsaneTest.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h
+$(BUILD_DIR)/InsaneTest.o: $(INSANE_CPP_SOURCE_DIR)/InsaneTest.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h $(SOURCES_DIR)/Makefile
 	$(CRLF)
 	$(CXX) -MJ $@.$(COMPILATION_DB_EXT) $(BUILD_FLAGS) -c $(INSANE_CPP_SOURCE_DIR)/InsaneTest.cpp -o $@
 
-$(BUILD_DIR)/InsaneString.o: $(INSANE_CPP_SOURCE_DIR)/InsaneString.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h
+$(BUILD_DIR)/InsaneString.o: $(INSANE_CPP_SOURCE_DIR)/InsaneString.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h $(SOURCES_DIR)/Makefile
 	$(CRLF)
 	$(CXX) -MJ $@.$(COMPILATION_DB_EXT) $(BUILD_FLAGS) -c $(INSANE_CPP_SOURCE_DIR)/InsaneString.cpp -o $@
 
-$(BUILD_DIR)/InsaneCryptography.o: $(INSANE_CPP_SOURCE_DIR)/InsaneCryptography.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h
+$(BUILD_DIR)/InsaneCryptography.o: $(INSANE_CPP_SOURCE_DIR)/InsaneCryptography.cpp $(INSANE_CPP_INCLUDE_DIR)/Insane/*.h $(SOURCES_DIR)/Makefile
 	$(CRLF)
 	$(CXX) -MJ $@.$(COMPILATION_DB_EXT) $(BUILD_FLAGS) -c $(INSANE_CPP_SOURCE_DIR)/InsaneCryptography.cpp -o $@
