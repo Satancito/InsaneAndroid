@@ -103,8 +103,8 @@ function Build-IcuLibraryForInsane {
     )
     $AndroidAPI = Test-AndroidNDKApi -Api $AndroidAPI -Assert
     $DestinationDir = [string]::IsNullOrWhiteSpace($DestinationDir) ? "$(Get-CppLibsDir)" : $DestinationDir
-    Install-AndroidNDK -Force:$ForceDownloadNDK
-    & "$PSScriptRoot/submodules/PsICU/X-PsIcu-Android.ps1" -DistDirSuffix "Insane" -AndroidAPI $AndroidAPI -DestinationDir $DestinationDir
+    & "$PSScriptRoot/submodules/PsICU/X-PsIcu-Android.ps1" -Clean
+    & "$PSScriptRoot/submodules/PsICU/X-PsIcu-Android.ps1" -DistDirSuffix "Insane" -AndroidAPI $AndroidAPI -DestinationDir $DestinationDir -ForceDownloadNDK:$ForceDownloadNDK
 }
 
 function Build-BotanLibraryForInsane {
@@ -121,8 +121,8 @@ function Build-BotanLibraryForInsane {
     )
     $DestinationDir = [string]::IsNullOrWhiteSpace($DestinationDir) ? "$(Get-CppLibsDir)" : $DestinationDir
     $AndroidAPI = Test-AndroidNDKApi -Api $AndroidAPI -Assert
-    Install-AndroidNDK -Force:$ForceDownloadNDK
-    & "$PSScriptRoot/submodules/PsBotan/X-PsBotan-Android.ps1" -DistDirSuffix "Insane" -AndroidAPI $AndroidAPI -DestinationDir $DestinationDir
+    & "$PSScriptRoot/submodules/PsBotan/X-PsBotan-Android.ps1" -Clean
+    & "$PSScriptRoot/submodules/PsBotan/X-PsBotan-Android.ps1" -DistDirSuffix "Insane" -AndroidAPI $AndroidAPI -DestinationDir $DestinationDir -ForceDownloadNDK:$ForceDownloadNDK
 }
 
 function Build-InsaneLibrary {

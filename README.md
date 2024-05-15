@@ -195,8 +195,6 @@ Compiled lib with default options. Tree.
     └── Lib
         ├── libInsane.a
         └── libInsane.so
-        libInsane.a
-        libInsane.so
 ```
 
 JniLibs dir tree
