@@ -77,9 +77,9 @@ This Command allows to remove InsaneAndroid temp dir `<USER_DIRECTORY>/.InsaneAn
 <br />
 <br />
 
-## Results 
+## Results tree
  
-Compiled lib with default options. Tree.
+Compiled lib with default options.
 ```
 <DIST_DIR>
 .
