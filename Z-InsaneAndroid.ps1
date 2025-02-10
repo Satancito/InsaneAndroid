@@ -146,7 +146,7 @@ function Build-InsaneLibrary {
         [switch]
         $ForceDownloadNDK
     )
-    $AndroidAPI = Test-AndroidNDKApi -Api $AndroidAPI -Assert
+    $AndroidAPI = Get-ValidAndroidNDKApi -Api $AndroidAPI -Latest -Assert
     $DestinationDir = [string]::IsNullOrWhiteSpace($DestinationDir) ? "$(Get-CppLibsDir)" : $DestinationDir
     $LibsDir = [string]::IsNullOrWhiteSpace($LibsDir) ? "$(Get-CppLibsDir)" : $LibsDir
     $DistDirSuffix = [string]::IsNullOrWhiteSpace($DistDirSuffix) ? [string]::Empty : "-$($DistDirSuffix)"
