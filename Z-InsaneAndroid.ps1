@@ -101,7 +101,7 @@ function Build-IcuLibraryForInsane {
         [switch]
         $ForceDownloadNDK
     )
-    $AndroidAPI = Test-AndroidNDKApi -Api $AndroidAPI -Assert
+    $AndroidAPI = $AndroidAPI = Get-ValidAndroidNDKApi -Api $AndroidAPI -Latest -Assert
     $DestinationDir = [string]::IsNullOrWhiteSpace($DestinationDir) ? "$(Get-CppLibsDir)" : $DestinationDir
     & "$PSScriptRoot/submodules/PsICU/X-PsIcu-Android.ps1" -Clean
     & "$PSScriptRoot/submodules/PsICU/X-PsIcu-Android.ps1" -DistDirSuffix "Insane" -AndroidAPI $AndroidAPI -DestinationDir $DestinationDir -ForceDownloadNDK:$ForceDownloadNDK
